@@ -31,8 +31,7 @@ jobs:
           path: ./app
           fetch-depth: 0
       - name: ls
-        run: cd app |
-            ls
+        run: ls -la ./app
 
       - name: Detect package manager
         id: detect-package-manager
