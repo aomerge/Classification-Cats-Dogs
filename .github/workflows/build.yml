@@ -28,7 +28,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          path: './app'
+          path: 'app'
           fetch-depth: 0
       - name: ls
         run: |
