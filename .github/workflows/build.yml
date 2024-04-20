@@ -28,10 +28,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-            path: 'app'
-            fetch-depth: 0
+          path: "app"
+          fetch-depth: 0
       - name: ls
-        run: ls
+        run: cd app && ls
 
       - name: Detect package manager
         id: detect-package-manager
