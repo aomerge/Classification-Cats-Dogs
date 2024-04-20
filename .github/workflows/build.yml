@@ -30,6 +30,8 @@ jobs:
         with:
             path: 'app'
             fetch-depth: 0
+      - name: ls
+        run: ls
 
       - name: Detect package manager
         id: detect-package-manager
