@@ -5,13 +5,14 @@ import * as tf from "@tensorflow/tfjs";
 const VideoClassifier: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [model, setModel] = useState<tf.LayersModel | null>(null);
-  const [prediction, setPrediction] = useState<string>("");
+  const [model, setModel] = useState<tf.LayersModel | null | any>(null);
+  const [prediction, setPrediction] = useState<string>(
+    "inserte un objeto en la camara"
+  );
 
   useEffect(() => {
     tf.loadLayersModel("./model/model.json").then((loadedModel) => {
       setModel(loadedModel);
-      console.log("Model loaded.");
     });
 
     navigator.mediaDevices
@@ -32,39 +33,33 @@ const VideoClassifier: React.FC = () => {
       const canvas: HTMLCanvasElement | null = canvasRef.current;
       const image = canvas?.getContext("2d");
       image?.drawImage(video, 0, 0, image.canvas?.width, image.canvas?.width);
-      const imgData = image?.getImageData(0, 0, image.canvas.width, image.canvas?.height);
+      const imgData = image?.getImageData(
+        0,
+        0,
+        image.canvas.width,
+        image.canvas?.height
+      );
 
       let arr: Array<any> = [];
-      const arr2 = [];
 
-      for (let i = 0; i < imgData?.data.length!; i +=4) {             
+      for (let i = 0; i < imgData?.data.length!; i += 4) {
         const red = imgData?.data[i]! / 255;
-        const green = imgData?.data[i + 1]!/ 255;
+        const green = imgData?.data[i + 1]! / 255;
         const blue = imgData?.data[i + 2]! / 255;
         const gray = (red + green + blue) / 3;
         arr.push(gray);
-        if (arr.length === 90) {
-          arr2.push(arr);
-          arr = [];
-        }        
-        const tensor  = tf.tensor4d([arr]);
-        const response: Number | any  = model.predict(tensor);
-
-        const resultModel = response <= 0.5 ? "Cat" : "Dog";
-        setPrediction(resultModel);
-
       }
-
-      /* const tfImg = tf.browser.fromPixels(canvas).expandDims(0);      
-      const smallImg = tf.image.resizeBilinear(tfImg, [90, 90]);
-      const resized = tf.cast(smallImg, "float32");
-      const t4d = tf.tensor4d(Array.from(resized.dataSync()), [1, 90, 90, 3]); */
-
-      /*   const predictions = await model.predict(t4d);
-      if (predictions instanceof tf.Tensor) {
-        const predictionArray = await predictions.data();
-        setPrediction(predictionArray[0] > 0.5 ? "Dog" : "Cat");
-      } */
+      const tensor = tf.tensor4d(arr, [1, 90, 90, 1]);
+      const response: Number | any = model.predict(tensor).dataSync();      
+      if (response[0] > 0.2 && response[0] < 0.8) {
+        setPrediction("Enfoca bien al objeto");
+      }
+      if (response[0] <= 0.2) {
+        setPrediction("cat");
+      }
+      if (response[0] >= 0.8) {
+        setPrediction("dog");
+      }
     }
   };
 
@@ -88,10 +83,10 @@ const VideoClassifier: React.FC = () => {
       />
       <canvas
         ref={canvasRef}
-        style={{ display: "block" }}
+        style={{ display: "none" }}
         width="90"
         height="90"
-        className="border"
+        className="border none"
       />
       <div>Prediction: {prediction}</div>
     </div>
