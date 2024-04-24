@@ -99,13 +99,27 @@ const VideoClassifier: React.FC = () => {
           )}
           {prediction === "cat" && (
             <>
-              <img src="/image/icons8-gato-pixel-100(1).png" alt="cat" />
+              <img
+                src={
+                  process.env.REACT_APP_BASE_URL
+                    ? `${process.env.REACT_APP_BASE_URL}/image/icons8-gato-pixel-100(1).png`
+                    : `/image/icons8-gato-pixel-100(1).png`
+                }
+                alt="cat"
+              />
               <p className=" text-center">Cat</p>
             </>
           )}
           {prediction === "dog" && (
             <>
-              <img src="/image/icons8-minecraft-pug-90(1).png" alt="dog" />
+              <img
+                src={
+                  process.env.REACT_APP_BASE_URL
+                    ? `${process.env.REACT_APP_BASE_URL}/image/icons8-minecraft-pug-90(1).png`
+                    : `/image/icons8-minecraft-pug-90(1).png`
+                }
+                alt="dog"
+              />
               <p className=" text-center">Dog</p>
             </>
           )}

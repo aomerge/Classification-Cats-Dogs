@@ -24,7 +24,7 @@ const ImageClassifier: any = () => {
     }
   };
 
-  const classifyImage = async () => {    
+  const classifyImage = async () => {
     let tensorImage = tf.browser
       .fromPixels(imageRef.current as any)
       .resizeBilinear([90, 90]) // Asegúrate de cambiar "28, 28" al tamaño exacto usado durante el entrenamiento
@@ -40,7 +40,7 @@ const ImageClassifier: any = () => {
 
     // Simulando la carga del modelo y la predicción
     const model: any = await tf.loadLayersModel("model/model.json");
-    const result = model.predict(image).dataSync();    
+    const result = model.predict(image).dataSync();
     const respuesta = result[0] <= 0.6 ? "Gato" : "Perro";
     setPrediction(respuesta);
   };
@@ -85,13 +85,27 @@ const ImageClassifier: any = () => {
           )}
           {prediction === "Gato" && (
             <>
-              <img src="/image/icons8-gato-pixel-100(1).png" alt="cat" />
+              <img
+                src={
+                  process.env.REACT_APP_BASE_URL
+                    ? `${process.env.REACT_APP_BASE_URL}/image/icons8-gato-pixel-100(1).png`
+                    : `/image/icons8-gato-pixel-100(1).png`
+                }
+                alt="cat"
+              />
               <p className=" text-center">Cat</p>
             </>
           )}
           {prediction === "Perro" && (
             <>
-              <img src="/image/icons8-minecraft-pug-90(1).png" alt="dog" />
+              <img
+                src={
+                  process.env.REACT_APP_BASE_URL
+                    ? `${process.env.REACT_APP_BASE_URL}/image/icons8-minecraft-pug-90(1).png`
+                    : `/image/icons8-minecraft-pug-90(1).png`
+                }
+                alt="dog"
+              />
               <p className=" text-center">Dog</p>
             </>
           )}
