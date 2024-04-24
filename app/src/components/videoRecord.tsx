@@ -7,7 +7,7 @@ const VideoClassifier: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [model, setModel] = useState<tf.LayersModel | null | any>(null);
   const [prediction, setPrediction] = useState<string>("");
-
+  console.log(process.env.REACT_APP_BASE_URL);
   useEffect(() => {
     tf.loadLayersModel("./model/model.json").then((loadedModel) => {
       setModel(loadedModel);
