@@ -6,9 +6,7 @@ const VideoClassifier: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [model, setModel] = useState<tf.LayersModel | null | any>(null);
-  const [prediction, setPrediction] = useState<string>(
-    "inserte un objeto en la camara"
-  );
+  const [prediction, setPrediction] = useState<string>("");
 
   useEffect(() => {
     tf.loadLayersModel("./model/model.json").then((loadedModel) => {
@@ -50,9 +48,9 @@ const VideoClassifier: React.FC = () => {
         arr.push(gray);
       }
       const tensor = tf.tensor4d(arr, [1, 90, 90, 1]);
-      const response: Number | any = model.predict(tensor).dataSync();      
+      const response: Number | any = model.predict(tensor).dataSync();           
       if (response[0] > 0.2 && response[0] < 0.8) {
-        setPrediction("Enfoca bien al objeto");
+        setPrediction("");
       }
       if (response[0] <= 0.2) {
         setPrediction("cat");
@@ -72,23 +70,47 @@ const VideoClassifier: React.FC = () => {
   }, [model]);
 
   return (
-    <div>
-      <video
-        ref={videoRef}
-        autoPlay
-        playsInline
-        muted
-        width="720"
-        height="480"
-      />
-      <canvas
-        ref={canvasRef}
-        style={{ display: "none" }}
-        width="90"
-        height="90"
-        className="border none"
-      />
-      <div>Prediction: {prediction}</div>
+    <div className="flex gap-10">
+      <section className=" w-1/2  rounded-sm overflow-hidden ">
+        {videoRef ? (
+          <video
+            ref={videoRef}
+            autoPlay
+            playsInline
+            muted
+            width="720"
+            height="480"
+          />
+        ) : (
+          <img src="https://via.placeholder.com/720x480" alt="Placeholder" />
+        )}
+        <canvas
+          ref={canvasRef}
+          style={{ display: "none" }}
+          width="90"
+          height="90"
+          className="border none"
+        />
+      </section>
+      <section className="border rounded-md w-1/2 grid justify-center items-center">
+        <div>
+          {prediction === "" && (
+            <p className=" text-center">Enfoca bien al objeto</p>
+          )}
+          {prediction === "cat" && (
+            <>
+              <img src="/image/icons8-gato-pixel-100(1).png" alt="cat" />
+              <p className=" text-center">Cat</p>
+            </>
+          )}
+          {prediction === "dog" && (
+            <>
+              <img src="/image/icons8-minecraft-pug-90(1).png" alt="dog" />
+              <p className=" text-center">Dog</p>
+            </>
+          )}
+        </div>
+      </section>
     </div>
   );
 };

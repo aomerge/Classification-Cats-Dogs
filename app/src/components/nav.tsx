@@ -1,13 +1,19 @@
 export default function Nav (){
-    return(
-        <nav className="bg-dark text-secondary p-4 text-center">
-            <h1 className="display-5 fw-bold text-white">Ringa Tech</h1>
-            <div className="col-lg-6 mx-auto">
-                <p className="fs-5 mb-4">
-                    Revisa <a href="https://youtube.com/RingaTech">mi canal</a> para
-                    videos de inteligencia artificial, programaci&oacute;n, etc.
-                </p>
-            </div>
-        </nav>
+    return (
+      <nav className=" shadow-gray-700 shadow-xl drop-shadow-md   flex justify-around text-secondary px-14 text-center border w-1/2 py-5 rounded-full">
+        <div>
+          <a href="/" className="text-white hover:text-yellow-500 text-xl">
+            Image Classification
+          </a>
+        </div>
+        <div>
+          <a
+            href="/video-classification"
+            className="text-white hover:text-yellow-500 text-xl"
+          >
+            Video Classification
+          </a>
+        </div>
+      </nav>
     );
 }
