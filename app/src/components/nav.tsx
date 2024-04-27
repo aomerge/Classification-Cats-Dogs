@@ -8,7 +8,11 @@ export default function Nav (){
         </div>
         <div>
           <a
-            href="/video-classification"
+            href={
+              process.env.REACT_APP_BASE_URL
+                ? `${process.env.REACT_APP_BASE_URL}/video-classification`
+                : "/video-classification"
+            }
             className="text-white hover:text-yellow-500 text-xl"
           >
             Video Classification
